@@ -9,8 +9,29 @@ import connectDB from "./db/index.js";
 
 dotenv.config({ path: './env' })
 connectDB()
+    .then(() => {
+        app.on("error", (error) => {
+            console.log("error", error)
+            throw error
+        })
+        app.listen(process.env.PORT || 8000, () => {
+            console.log(`server is running at : ${process.env.PORT}`)
+        })
+    })
+    .catch((err) => {
+        console.log("MongoDB connnection failed : ", err)
+    })
 
+
+
+
+
+
+
+
+// ---------- Another way of connecting database -----------------
 // const app = express()
+// -------------------- effy to call function inplace
 // (async () => {
 //     try {
 //         await mongoose.connect(`${process.env.MONGO_URI}/${DB_NAME}`)
