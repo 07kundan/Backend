@@ -6,9 +6,10 @@ import { DB_NAME } from "./constants.js";
 import express from 'express';
 import connectDB from "./db/index.js";
 
+const app = express()
 
 dotenv.config({ path: './env' })
-connectDB()
+connectDB()     //connecting database in different file
     .then(() => {
         app.on("error", (error) => {
             console.log("error", error)
@@ -21,10 +22,6 @@ connectDB()
     .catch((err) => {
         console.log("MongoDB connnection failed : ", err)
     })
-
-
-
-
 
 
 
