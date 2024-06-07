@@ -12,7 +12,7 @@ const userSchema = new Schema(
             trim: true,
             index: true         // for enabling searching field in database
         },
-        username: {
+        email: {
             type: String,
             required: true,
             unique: true,
@@ -27,7 +27,7 @@ const userSchema = new Schema(
         },
         avatar: {
             type: String,       // Cloudinary(using third party for images) Url
-            required: true,
+            // required: true,
         },
         coverImage: {
             type: String,       // Cloudinary(using third party for images) Url
@@ -53,7 +53,7 @@ const userSchema = new Schema(
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next(); // if password doesn't modified return the function
 
-    this.password = bcrypt.hash(this.password, 10)
+    this.password = await bcrypt.hash(this.password, 10)
     next();
 })
 

@@ -5,10 +5,16 @@ import mongoose from "mongoose";
 import { DB_NAME } from "./constants.js";
 import express from 'express';
 import connectDB from "./db/index.js";
+import { app } from './app.js'
 
-const app = express()
+dotenv.config(
+    {
+        path: './env'
 
-dotenv.config({ path: './env' })
+    }
+)
+
+
 connectDB()     //connecting database in different file
     .then(() => {
         app.on("error", (error) => {
