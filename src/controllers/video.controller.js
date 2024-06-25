@@ -129,7 +129,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
     owner: req.user?._id,
   });
 
-  console.log(videoCreated);
+  // console.log(videoCreated);
 
   return res
     .status(200)
@@ -143,6 +143,19 @@ const publishAVideo = asyncHandler(async (req, res) => {
 const getVideoById = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
   //TODO: get video by id
+  if (!videoId) {
+    throw new ApiError(400, "please provide a valid Id");
+  }
+  const resultVideo = await Video.findById(videoId);
+
+  if (!resultVideo) {
+    throw new ApiError(500, "video doesn't exist");
+  }
+  // console.log("searching video by video Id", resultVideo);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, resultVideo, "video found successfully"));
 });
 
 // -----------------
@@ -152,6 +165,26 @@ const getVideoById = asyncHandler(async (req, res) => {
 const updateVideo = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
   //TODO: update video details like title, description, thumbnail
+  const updatedVideo = await Video.findByIdAndUpdate(
+    videoId,
+    {
+      $set: {
+        title: "updated video",
+        description: "updating video details",
+      },
+    },
+    {
+      new: true, // If new is true it'll return updated video document
+    }
+  ).select("-videoFile -thumbnail -views -owner");
+
+  if (!updateVideo) {
+    throw new ApiError(500, "problem while updating");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, updatedVideo, "video updated successfully"));
 });
 
 // -------------------

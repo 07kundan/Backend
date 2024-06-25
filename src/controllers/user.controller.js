@@ -271,9 +271,13 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 
 // get currentUser
 const getCurrentUser = asyncHandler(async (req, res) => {
-  return res
-    .status(200)
-    .json(new ApiResponse(200, req.user, "account updated successfully"));
+  try {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, req.user, "user found successfully"));
+  } catch (error) {
+    throw new ApiError(400, "please login first");
+  }
 });
 
 // ---------------
