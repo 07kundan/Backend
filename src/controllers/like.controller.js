@@ -10,7 +10,7 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
   //TODO: toggle like on video
 
-  if (!videoId) {
+  if (!videoId || !isValidObjectId(videoId)) {
     throw new ApiError(400, "invalid videoId");
   }
 
