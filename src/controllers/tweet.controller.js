@@ -116,12 +116,12 @@ const deleteTweet = asyncHandler(async (req, res) => {
       throw new ApiError(400, "invalid tweetId");
     }
 
-    const tweetTodelete = await Tweet.findByIdAndDelete(tweetId);
+    const tweetDeleted = await Tweet.findByIdAndDelete(tweetId);
     // console.log(tweetTodelete); // returns deleted document
 
     return res
       .status(200)
-      .json(new ApiResponse(200, "", "tweet deleted successfully"));
+      .json(new ApiResponse(200, tweetDeleted, "tweet deleted successfully"));
   } catch (error) {
     throw new ApiError(
       500,
